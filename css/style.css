@@ -4,7 +4,7 @@
     box-sizing: border-box;
 }
 .container {
-    width: 85%;
+    width: 95%;
     margin: 20px auto;
     background-color: rgb(236, 235, 231);
     border: 1px solid #000;
@@ -33,9 +33,9 @@
 /* Input/Button */
 .container select,
 .container input{
-    padding: 5px;
+    padding: 3px;
     margin-right: 5px;
-    font-size: 18px
+    font-size: 18px;
 }
 .container .input {
     border: none;
@@ -71,8 +71,9 @@
 
 
 
-
-
+.invoice input {
+    width: 100%;
+}
 .invoice {
     width: 100%;
     margin: 0px auto;
