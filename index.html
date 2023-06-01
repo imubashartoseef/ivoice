@@ -48,7 +48,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+           <!--     <tr>
                     <td><input type="text" value="2" name="" id="qtty1"></td>
                     <td><input type="text" value="Shirt" name="" id="" disabled></td>
                     <td><input type="text" value="10" name="" id="ittp1" disabled></td>
@@ -64,7 +64,7 @@
                     <td><input type="text" value="" name="" id="itmp2" disabled></td>
                     <td><input type="text" value="Dry Clean" name="" id="" disabled></td>
                     <td><button class="del">x</button></td>
-                </tr>
+                </tr>-->
             </tbody>
             <tfoot>
                 <tr>
@@ -93,7 +93,7 @@
     </div>
 
 
-    <div class="container" style="display: none;">
+    <div class="container" style="">
             <div class="invoice" id="invoice">
                 <div class="center-al">
                     <div class="branding">
@@ -121,8 +121,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Shirt</td>
+                        <tr><td>Shirt</td>
                             <td>10</td>
                             <td>2</td>
                             <td>20</td>
@@ -135,7 +134,7 @@
                             <td>2</td>
                             <td>20</td>
                             <td>Dry Clean</td>
-                        </tr>
+                       </tr> 
                     </tbody>
                     <tfoot>
                         <tr>
@@ -164,6 +163,7 @@
     <script>
         // Add Item
             var clickCounter = 0;
+            var arrayData = new Array();
             $("#addItem_toSell").click((e)=>{
                 e.preventDefault();
                 if(!parseInt($("#qty").val()) || parseInt($("#qty").val()) == ""){
@@ -183,21 +183,21 @@
 
                     
 
-                    var cat = $("#item_cat").val();
+                    var itemCat = $("#item_cat").val();
 
                     var itemVal = getProductD(itemName);
 
-                    if(itemVal[0] != ''){
+                    if(itemVal[0] != ""){
                         
-                        if (cat == "Dry") {
+                        if (itemCat == "Dry") {
 
                             itemPrice = itemVal[1];
 
-                        }else if(cat == "Washed"){
+                        }else if(itemCat == "Washed"){
 
                             itemPrice = itemVal[2];
 
-                        }else if(cat == "Press"){
+                        }else if(itemCat == "Press"){
 
                             itemPrice = itemVal[3];
 
@@ -210,20 +210,34 @@
                         alert("You must select service type");
                     }
 
-                    var qty = '<input type="text" value="' + itemQty + '" name="" id="qtty">';
+                    var qty = '<input type="text" value="' + itemQty + '" name="" id="qtty'+ clickCounter +'">';
                     var item = '<input type="text" value="' + itemName + '" name="" id="" disabled>';
-                    var item_p = '<input type="text" value="' + itemPrice + '" name="" id="itmp" disabled>';
-                    var item_t = '<input type="text" value="20" name="" id="tot" disabled>';
-                    var item_type = '<input type="text" value="' + $("#item_cat").val() + '" name="" id="" disabled>';
-                    var item_rem = '<button class="del">x</button></td>';
+                    var item_p = '<input type="text" value="' + itemPrice + '" name="" id="itmp'+clickCounter+'" disabled>';
+                    var item_t = '<input type="text" value="'+ itemQty * itemPrice + '" name="" id="tot'+clickCounter+'" disabled>';
+                    var item_type = '<input type="text" value="' + itemCat + '" name="" id="" disabled>';
+                    var item_rem = '<button class="del" onclick="remData(this);" id="' + clickCounter +'">x</button></td>';
+                    
+                    var data1 = new Array(itemQty,itemName,itemPrice,itemQty * itemPrice,itemCat);
+                    arrayData.push(data1);
 
 
 
                     $("#init_invoice tbody").append(html_tr + html_td + qty + html_td2 + html_td + item + html_td2 + html_td + item_p + html_td2 + html_td + item_t + html_td2 + html_td + item_type + html_td2 + html_td + item_rem + html_td2 + html_tr2);
+                   
+                    grandTotal();
 
                 }
                 
             });
+
+            // Remove Array
+            function remData(sel){
+                $(sel).parents("tr").remove();
+                clickCounter -= 1;
+                // console.log(arrayData[$(sel).attr("id")-1]);
+                arrayData.pop($(sel).attr("id")-1);
+                grandTotal();
+            }
 
             // Print Data
             function printContent(el){
@@ -239,24 +253,22 @@
             function multiCols(){
                 var rows = $("#init_invoice tbody tr");
                 // rowsnum = rows.legnth;
-                for (var i =  1; i <= rows.length; i++) {
+                for (var i =  0; i <= rows.length -1; i++) {
                     $("#itmp" + i).val($("#qtty" + i).val() * $("#ittp" + i).val());
                     // console.log($("#qtty" + i).val() * $("#ittp" + i).val());
                 }
             }
 
-            grandTotal();
 
             // Total
             function grandTotal(){
-            var rows = $("#init_invoice tbody tr");
                  grand = 0;
                  
-                for (var i =  1; i <= rows.length; i++) {
-                    vl = $("#itmp" + i).val();
+                for (var i =  0; i <= arrayData.length-1; ++i) {
+                    vl = arrayData[i][3];
                     grand += parseInt(vl);
                 } 
-
+                // alert(grand);
                 $("#grd_tot").html(grand);
                 // 5%
                 var vat = (5 / 100) * grand;
