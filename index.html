@@ -140,19 +140,16 @@
                         <tr>
                             <th colspan="3"></th>
                             <th>Amount:-</th>
-                            <th>40</th>
+                            <th id="fgrand1">40</th>
                         </tr>
                         <tr>
                             <th colspan="3"></th>
                             <th>VAT 5%:-</th>
-                            <th>2</th>
-                        </tr>
-                        <tr>
-                            <th colspan="5" style="height: 20px"></th>
+                            <th id="tax5"></th>
                         </tr>
                         <tr><th colspan="3"></th>
                             <th style="font-size: 25px">Total:-</th>
-                            <th style="font-size: 25px">42</th>
+                            <th style="font-size: 25px" id="fgrand2">42</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -270,10 +267,13 @@
                 } 
                 // alert(grand);
                 $("#grd_tot").html(grand);
+                $("#fgrand1").html(grand);
                 // 5%
                 var vat = (5 / 100) * grand;
                 $("#vat").html(vat);
+                $("#tax5").html(vat);
                 $("#tot").html(grand + vat);
+                $("#fgrand2").html(grand + vat);
             }        
     </script>
 
