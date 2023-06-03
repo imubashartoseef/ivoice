@@ -1,0 +1,153 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S & M Cloths</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/jquery-3.7.0.min.js"></script>
+    <script>
+        var product = new Array();
+    </script>
+</head>
+<body>
+
+    <div class="container">
+        <ul class="menu-top">
+            <li>
+                <a href="#">Home</a>
+            </li>
+            <li>
+                <a href="#">Settings</a>
+            </li>
+        </ul>
+        <hr style="margin-top: 5px">
+        <br>
+        <table class="invoice" id="init_invoice">
+            <thead>
+                <tr>
+                    <th colspan="2">
+                        <input type="text" placeholder="Item Name" id="itemName">
+                    </th>
+                    <th>
+                        <input type="text" placeholder="Wash Price" id="washPrice">
+                    </th>
+                    <th>
+                        <input type="text" placeholder="Dry Price" id="dryPrice">
+                    </th>
+                    <th>
+                        <input type="text" placeholder="Press Price" id="pressPrice">
+                    </th>
+                    <th>
+                        <button class="button" id="addItem">Add Item</button>
+                    </th>
+                </tr>
+                <tr>
+                    
+                </tr>
+                <tr>
+                    <th>#</th>
+                    <th>Item Name</th>
+                    <th>Washed</th>
+                    <th>Dry</th>
+                    <th>Press</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="printProducts">
+           
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"></td>
+                    <td>
+                        <button id="print" onclick="saveItems();" class="button">Save</button>
+                    </td>
+                </tr>
+                <tr>
+                    <th colspan="4">&copy; Copyright 2023<br>Eml: rmubashar4747@gmail.com</th>
+                    <th>By: Mubashar Toseef</th>
+                    <th>Ph +92 (306) 6904747</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    
+    <script src="js/product.js"></script>
+    <script>
+        // Add Item
+        var html_tr = '<tr>';
+        var html_tr2  = '</tr>';
+
+        var html_td  = '<td>';
+        var html_td2  = '</td>';
+        
+        var clickCounter = 0;
+
+        $("#addItem").click((e)=>{
+            e.preventDefault();
+            if(parseInt($("#itemName").val()) !="" && parseInt($("#washPrice").val()) > 0 && parseInt($("#dryPrice").val()) > 0 && parseInt($("#pressPrice").val()) > 0){
+
+                clickCounter += 1;
+                
+
+                itemName = $("#itemName").val();
+                washPrice = $("#washPrice").val();
+                dryPrice = $("#dryPrice").val();
+                pressPrice = $("#pressPrice").val();
+
+                var itemN = '<input type="text" value="' + itemName + '" name="" id="qtty'+ clickCounter +'" disabled="">';
+                var washP = '<input type="text" value="' + washPrice + '" name="" id="" disabled="">';
+                var dryP = '<input type="text" value="' + dryPrice + '" name="" id="itmp'+clickCounter+'" disabled="">';
+                var pressP = '<input type="text" value="'+ pressPrice + '" name="" id="tot'+clickCounter+'" disabled="">';
+                var item_rem = '<button class="del" onclick="remData(this);" id="' + clickCounter +'">x</button></td>';
+                
+                var data1 = new Array(itemName,dryPrice,washPrice,pressPrice);
+                product.push(data1);
+
+                var data2 = html_tr + html_td + clickCounter + html_td2 + html_td + itemN + html_td2 + html_td + washP + html_td2 + html_td + dryP + html_td2 + html_td + pressP + html_td2 + html_td + item_rem + html_td2 + html_tr2;
+
+
+
+                $("#printProducts").append(data2);
+
+            }else{
+                alert("Please check all fields!");
+
+            }
+            
+        });
+
+
+        // Remove Array
+        function remData(sel){
+            $(sel).parents("tr").remove();
+            clickCounter -= 1;
+            product.pop($(sel).attr("id")-1);
+        }
+
+        // save products
+        function saveItems(){
+            var getText = "products= arra" + "y(";
+
+            for (let i = 0; i < product.length; i++) {
+                getText += "arra" + "y(";
+                getText += product[i];
+                getText += (i == product.length -1)? ")" : "),";
+            }
+            // getText += product;
+
+            getText += ")";
+
+            $("body").append(getText);
+
+            // alert(getText);
+            var txt = new CreateObject("Scripting.FileSystemObject");
+                var s = txt.CreateTextFile("../11.txt", true);
+                s.WriteLine('Hello');
+                s.Close();
+        }
+    </script>
+
+</body>
+</html>
