@@ -24,6 +24,7 @@
     font-size: 20px;
     text-decoration: none;
 }
+.menu-top li .active,
 .menu-top li a:active,
 .menu-top li a:focus {
     color: #fff;
