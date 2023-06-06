@@ -6,10 +6,27 @@
     <title>S & M Cloths</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/jquery-3.7.0.min.js"></script>
+    <script>
+        const date = new Date();
+
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+        let hours = date.getHours();
+        let minuts = date.getMinutes();
+        let seconds = date.getSeconds();
+        let sp = " ";
+
+        // This arrangement can be altered based on how we want the date's format to appear.
+        let currentDate = `${day}-${month}-${year} ${sp}: ${hours}:${minuts}:${seconds}`;
+        //console.log(currentDate); // "17-6-2022"
+        
+    </script>
 </head>
 <body>
 
     <div class="container">
+        
         <ul class="menu-top">
             <li>
                 <a href="index.html" class="active">Home</a>
@@ -75,12 +92,12 @@
                 <tr>
                     <th colspan="3"></th>
                     <th>VAT 5%:-</th>
-                    <th id="vat">2</th>
+                    <th id="vat">0</th>
                 </tr>
                 <tr>
                     <th colspan="3"></th>
                     <th>Total:-</th>
-                    <th id="tot">42</th>
+                    <th id="tot">0</th>
                 </tr>
                 <tr>
                     <td colspan="4"></td>
@@ -104,10 +121,14 @@
                     <b class="tag">Loundry Service Downtown</b>
                 </div>
                 <div class="row">
-                    <h4>Mobile: <p>03066904747</p></h4>
-                    <h4>Dated: <p>15/02/2023 20:08:00pm</p></h4>
+                    <h4>Mobile: <p id="mobilNum">03066904747</p></h4>
+                    <h4>Dated: <p><script>var dt = new Date();document.write(currentDate);</script></p></h4>
                     <h4>Status: <p>Delivered</p></h4>
-                    <h4>#45</h4>
+                    <h4>#
+                        <script>
+                            document.write(Math.ceil((month+day+year+hours+minuts+seconds+1)/(hours+minuts+seconds))+1);
+                        </script>
+                    </h4>                    
                 </div>
 
                 <table class="print_tab">
@@ -140,7 +161,7 @@
                         <tr>
                             <th colspan="3"></th>
                             <th>Amount:-</th>
-                            <th id="fgrand1">40</th>
+                            <th id="fgrand1"></th>
                         </tr>
                         <tr>
                             <th colspan="3"></th>
@@ -149,14 +170,40 @@
                         </tr>
                         <tr><th colspan="3"></th>
                             <th style="font-size: 25px">Total:-</th>
-                            <th style="font-size: 25px" id="fgrand2">42</th>
+                            <th style="font-size: 25px" id="fgrand2"></th>
+                        </tr>
+                        <tr>
+                            <th colspan="4">&copy; Copyright 2023<br>Eml: rmubashar4747@gmail.com</th>
+                            <th>By: Mubashar Toseef</th>
+                            <th>Ph +92 (306) 6904747</th>
                         </tr>
                     </tfoot>
                 </table>
             </div>
         </div>
     
-    <script src="js/product.js"></script>
+    <script src="products/product.js"></script>
+    <script>
+        var itemOpt = "";
+            for (var i = 0; i < product.length; i++) {
+                itemOpt += '<option value="'+ product[i][0] +'">'+ product[i][0] +'</option>';
+            }
+
+            $("#item_name").html(itemOpt);
+
+            function getProductD(item) {
+                for (var i = 0; i < product.length; i++) {
+                    if(product[i][0]==item){
+                        data = product[i];
+                        break;
+                    }
+                    else{
+                        data = Array('empty');;
+                    }
+                }
+                return data;
+            }
+    </script>
     <script>
         // Add Item
             var html_tr = '<tr>';
@@ -211,11 +258,11 @@
                         alert("You must select service type");
                     }
 
-                    var qty = '<input type="text" value="' + itemQty + '" name="" id="qtty'+ clickCounter +'">';
+                    var qty = '<input type="text" value="' + itemQty + '" name="" id="qtty'+ clickCounter +'" disabled="">';
                     var item = '<input type="text" value="' + itemName + '" name="" id="" disabled>';
-                    var item_p = '<input type="text" value="' + itemPrice + '" name="" id="itmp'+clickCounter+'" disabled>';
-                    var item_t = '<input type="text" value="'+ itemQty * itemPrice + '" name="" id="tot'+clickCounter+'" disabled>';
-                    var item_type = '<input type="text" value="' + itemCat + '" name="" id="" disabled>';
+                    var item_p = '<input type="text" value="' + itemPrice + '" name="" id="itmp'+clickCounter+'" disabled="">';
+                    var item_t = '<input type="text" value="'+ itemQty * itemPrice + '" name="" id="tot'+clickCounter+'" disabled="">';
+                    var item_type = '<input type="text" value="' + itemCat + '" name="" id="" disabled="">';
                     var item_rem = '<button class="del" onclick="remData(this);" id="' + clickCounter +'">x</button></td>';
                     
                     var data1 = new Array(itemQty,itemName,itemPrice,itemQty * itemPrice,itemCat);
@@ -236,8 +283,9 @@
                             grandPrint += html_tr + html_td + arrayData[clickCounter-1][1] + html_td2 + html_td + arrayData[clickCounter-1][2]  + html_td + arrayData[clickCounter-1][0] + html_td + arrayData[clickCounter-1][3] + html_td + arrayData[clickCounter-1][4] + html_td2 + html_td2 + html_td2 + html_td2 + html_tr2;
                             
                         }
+                        $("#mobilNum").html($("#mobile").val());
                        
-                        $("#printFBill").append(grandPrint);
+                        $("#printFBill").html(grandPrint);
                     }
 
                 }
@@ -291,7 +339,8 @@
                 $("#tax5").html(vat);
                 $("#tot").html(grand + vat);
                 $("#fgrand2").html(grand + vat);
-            }        
+            }
+            $("#mobile").focus(); 
     </script>
 
 </body>
