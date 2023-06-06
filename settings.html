@@ -6,9 +6,7 @@
     <title>S & M Cloths</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/jquery-3.7.0.min.js"></script>
-    <script>
-        var product = new Array();
-    </script>
+    <script src="products/product.js"></script>
 </head>
 <body>
 
@@ -73,7 +71,7 @@
         </table>
     </div>
     
-    <script src="js/product.js"></script>
+    <script src="products/product.js"></script>
     <script>
         // Add Item
         var html_tr = '<tr>';
@@ -81,6 +79,23 @@
 
         var html_td  = '<td>';
         var html_td2  = '</td>';
+
+        if(product.length > 0) {
+                data2 = "";
+            for (let i = 0; i < product.length; i++) {
+                
+                var itemN = '<input type="text" value="' + product[i][0] + '" name="" id="qtty'+ clickCounter +'" disabled="">';
+                var washP = '<input type="text" value="' + product[i][2] + '" name="" id="" disabled="">';
+                var dryP = '<input type="text" value="' + product[i][1] + '" name="" id="itmp'+clickCounter+'" disabled="">';
+                var pressP = '<input type="text" value="'+ product[i][3] + '" name="" id="tot'+clickCounter+'" disabled="">';
+                var item_rem = '<button class="del" onclick="remData(this);" id="' + clickCounter +'">x</button></td>';
+                
+                data2 += html_tr + html_td + (parseInt(i)+1) + html_td2 + html_td + itemN + html_td2 + html_td + washP + html_td2 + html_td + dryP + html_td2 + html_td + pressP + html_td2 + html_td + item_rem + html_td2 + html_tr2;
+                
+            }
+
+                $("#printProducts").html(data2);
+        }
         
         var clickCounter = 0;
 
@@ -128,25 +143,46 @@
 
         // save products
         function saveItems(){
-            var getText = "products= arra" + "y(";
+            // alert(product);
+            var getText = "product = ne" + "w Arra" + "y(" + ");\n";
+                getText += "product = Arra" + "y(";
 
             for (let i = 0; i < product.length; i++) {
-                getText += "arra" + "y(";
-                getText += product[i];
+                getText += "Arra" + "y(";
+                getText += "'" + product[i][0] + "'," + product[i][1] + "," + product[i][2] + "," + product[i][3];
                 getText += (i == product.length -1)? ")" : "),";
             }
             // getText += product;
 
             getText += ")";
 
-            $("body").append(getText);
+            // $("body").append(getText);
+            var comit = "/"+"*Arrangments\n 1st => ItemName (0)\n 2nd => DryPrice (1)\n 4th => WashingPrice (2)\n 3rd => PressPrice (3)*" + "/\n";
 
-            // alert(getText);
-            var txt = new CreateObject("Scripting.FileSystemObject");
-                var s = txt.CreateTextFile("../11.txt", true);
-                s.WriteLine('Hello');
-                s.Close();
+            saveTextAsFile(comit + getText + ';', 'product.js', 'text/plain');
+
+            
         }
+
+        function saveTextAsFile(textToWrite, fileNameToSaveAs, fileType) {
+            let textFileAsBlob = new Blob([textToWrite], { type: fileType });
+            let downloadLink = document.createElement('a');
+            downloadLink.download = fileNameToSaveAs;
+            downloadLink.innerHTML = 'Download File';
+
+            if (window.webkitURL != null) {
+                downloadLink.href = window.webkitURL.createObjectURL(
+                    textFileAsBlob
+                );
+            } else {
+                downloadLink.href = window.URL.createObjectURL(textFileAsBlob);
+                downloadLink.style.display = 'none';
+                document.body.appendChild(downloadLink);
+            }
+
+            downloadLink.click();
+        }
+        
     </script>
 
 </body>
